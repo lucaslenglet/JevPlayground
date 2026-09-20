@@ -1,0 +1,13 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Deliberately empty: the tool has no NuGet dependency. It reaches ASP.NET Core
+       through a FrameworkReference, which is not a package. Central management is on
+       anyway, so the first dependency anyone adds has to be declared here, in the open,
+       rather than buried in a csproj. -->
+  <ItemGroup />
+
+</Project>

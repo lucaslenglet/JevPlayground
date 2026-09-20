@@ -1,0 +1,16 @@
+<Project>
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Single source of truth: the package version, the smoke test and the release
+         workflow all read it. The workflow overrides it from the tag. -->
+    <JevPlayVersion Condition="'$(JevPlayVersion)' == ''">0.1.0</JevPlayVersion>
+  </PropertyGroup>
+
+</Project>

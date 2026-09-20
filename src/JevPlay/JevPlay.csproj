@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Microsoft.NET.Sdk + FrameworkReference rather than Microsoft.NET.Sdk.Web:
+       the supported path for a global tool that hosts Kestrel. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>JevPlay</RootNamespace>
+    <AssemblyName>jevplay</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>jevplay</ToolCommandName>
+    <PackageId>lucaslgt.JevPlay</PackageId>
+    <Version>$(JevPlayVersion)</Version>
+    <Authors>lucaslenglet</Authors>
+    <Description>A local playground for Jev (System One) models: a context, typed questions, answers with their probabilities.</Description>
+    <PackageTags>jev;typesafe;system-one;classifier;playground</PackageTags>
+    <PackageProjectUrl>https://github.com/lucaslenglet/JevPlayground</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lucaslenglet/JevPlayground</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\**\*">
+      <LogicalName>web/%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

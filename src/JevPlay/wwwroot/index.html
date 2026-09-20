@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jev Playground</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Jev Playground</h1>
+      <p id="config" class="config">Loading configuration…</p>
+    </header>
+
+    <main>
+      <form id="form" class="panel">
+        <label class="field">
+          <span>Context to analyse</span>
+          <textarea id="state" rows="6" placeholder="The text Jev should analyse…" required></textarea>
+        </label>
+
+        <section>
+          <div class="section-head">
+            <h2>Questions</h2>
+            <button type="button" id="add-question" class="ghost">+ Question</button>
+          </div>
+          <div id="questions"></div>
+        </section>
+
+        <div class="actions">
+          <button type="submit" id="send">Send</button>
+          <button type="button" id="reset" class="ghost">Reset</button>
+          <span id="status" class="status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <section class="panel" aria-labelledby="results-title">
+        <h2 id="results-title">Answers</h2>
+        <div id="results" class="empty">Nothing yet. Fill in a context and some questions, then send.</div>
+        <details id="raw-wrap" hidden>
+          <summary>Raw JSON</summary>
+          <pre id="raw"></pre>
+        </details>
+      </section>
+    </main>
+
+    <template id="question-template">
+      <article class="question">
+        <div class="question-head">
+          <input class="q-id" type="text" placeholder="identifier" aria-label="Question identifier" required />
+          <select class="q-type" aria-label="Question type">
+            <option value="choice">choice — one among N</option>
+            <option value="score">score — a level on a scale</option>
+            <option value="noul">noul — shaded true / false</option>
+          </select>
+          <button type="button" class="remove ghost" aria-label="Remove question">✕</button>
+        </div>
+        <input class="q-instructions" type="text" placeholder="Instructions: the question put to Jev" aria-label="Instructions" required />
+        <div class="criteria">
+          <div class="criteria-list"></div>
+          <button type="button" class="add-criterion ghost">+ Option</button>
+        </div>
+      </article>
+    </template>
+
+    <template id="criterion-template">
+      <div class="criterion">
+        <input class="c-id" type="text" aria-label="Value" />
+        <input class="c-desc" type="text" placeholder="description (optional)" aria-label="Description" />
+        <button type="button" class="remove ghost" aria-label="Remove option">✕</button>
+      </div>
+    </template>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

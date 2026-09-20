@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write   # required: lets GitHub issue the OIDC token nuget.org exchanges for a key
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      # The tag is the single source of the published version: v1.2.3 -> 1.2.3,
+      # v1.2.3-beta.1 -> 1.2.3-beta.1. Nothing in the repo needs bumping to release.
+      - name: Read version from tag
+        id: version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Tag '$GITHUB_REF_NAME' is not a version tag (expected vMAJOR.MINOR.PATCH[-suffix])."
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: dotnet build -c Release "-p:JevPlayVersion=${{ steps.version.outputs.version }}"
+
+      # Packs the release version to a local feed and drives the installed tool. The
+      # package pushed below is the very artifact this step validated.
+      - name: Smoke test
+        run: ./tests/smoke/run.sh ${{ steps.version.outputs.version }}
+
+      # Trusted publishing: nuget.org validates GitHub's OIDC token against the policy registered
+      # for this repository and returns an API key valid for one hour. Kept immediately before the
+      # push, since the key expires and each token buys exactly one key.
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push to NuGet
+        env:
+          PACKAGE: tests/smoke/.artifacts/feed/lucaslgt.JevPlay.${{ steps.version.outputs.version }}.nupkg
+          # Passed through the environment rather than interpolated into the command line,
+          # where it would be visible to anything listing processes on the runner.
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          test -f "$PACKAGE" || { echo "Validated package not found at $PACKAGE"; exit 1; }
+          dotnet nuget push "$PACKAGE" \
+            --source https://api.nuget.org/v3/index.json \
+            --api-key "$NUGET_API_KEY" \
+            --skip-duplicate

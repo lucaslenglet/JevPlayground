@@ -1,0 +1,19 @@
+# Let Git normalize line endings; the working tree gets the platform's native form.
+* text=auto
+
+*.cs        text diff=csharp
+*.csproj    text
+*.props     text
+*.slnx      text
+*.json      text
+*.md        text
+*.yml       text
+*.html      text diff=html
+*.js        text
+*.css       text
+
+# Run by bash on the CI runner; a CRLF shebang would break them.
+*.sh        text eol=lf
+
+*.png       binary
+*.nupkg     binary
