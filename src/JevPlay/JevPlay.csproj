@@ -14,12 +14,16 @@
     <ToolCommandName>jevplay</ToolCommandName>
     <PackageId>lucaslgt.JevPlay</PackageId>
     <Version>$(JevPlayVersion)</Version>
-    <Authors>lucaslenglet</Authors>
+    <Authors>Lucas Lenglet</Authors>
     <Description>A local playground for Jev (System One) models: a context, typed questions, answers with their probabilities.</Description>
     <PackageTags>jev;typesafe;system-one;classifier;playground</PackageTags>
     <PackageProjectUrl>https://github.com/lucaslenglet/JevPlayground</PackageProjectUrl>
     <RepositoryUrl>https://github.com/lucaslenglet/JevPlayground</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT-0</PackageLicenseExpression>
+    <!-- The release workflow points ReleaseNotesFile (as an environment variable, which MSBuild
+         reads as a property) at the CHANGELOG.md section of the version being published. -->
+    <PackageReleaseNotes Condition="'$(ReleaseNotesFile)' != '' And Exists('$(ReleaseNotesFile)')">$([System.IO.File]::ReadAllText('$(ReleaseNotesFile)'))</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

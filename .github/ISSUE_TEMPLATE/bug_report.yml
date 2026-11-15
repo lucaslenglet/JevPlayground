@@ -1,0 +1,30 @@
+name: Bug report
+description: Something does not work as documented.
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Tool version
+      description: Output of `jevplay --version`.
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options: [typesafe, simple-jev, mock]
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The value of `--model`, if you set one.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you sent, what you expected, what you got. Never paste your API key.
+    validations:
+      required: true

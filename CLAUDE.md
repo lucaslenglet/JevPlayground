@@ -96,6 +96,12 @@ version (`v1.2.3` -> `1.2.3`), so nothing in the repo is bumped to release. The 
 that version through `run.sh`, and pushes **that same validated artifact** to nuget.org — never a
 separately packed one.
 
+Release notes come from `CHANGELOG.md` (Keep a Changelog). Before tagging, rename `## [Unreleased]`
+to `## [1.2.3] - YYYY-MM-DD` and update the compare links at the bottom. The workflow extracts that
+section, fails before building if it is missing or empty, exposes it as the `ReleaseNotesFile`
+environment variable (read by the `.csproj` into `PackageReleaseNotes`), and finally creates the
+GitHub release with the same text — after the NuGet push, hence `contents: write`.
+
 Publishing uses nuget.org trusted publishing (OIDC), not a stored API key. The job needs
 `id-token: write`, and the `NuGet/login@v1` step must stay immediately before the push: it trades
 one OIDC token for one API key valid for a single hour. The only repository secret is `NUGET_USER`
