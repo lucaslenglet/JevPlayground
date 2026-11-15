@@ -1,5 +1,10 @@
 # JevPlay
 
+[![NuGet](https://img.shields.io/nuget/v/lucaslgt.JevPlay?logo=nuget)](https://www.nuget.org/packages/lucaslgt.JevPlay)
+[![Downloads](https://img.shields.io/nuget/dt/lucaslgt.JevPlay)](https://www.nuget.org/packages/lucaslgt.JevPlay)
+[![CI](https://github.com/lucaslenglet/JevPlayground/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/lucaslenglet/JevPlayground/actions/workflows/ci.yml)
+[![License: MIT-0](https://img.shields.io/github/license/lucaslenglet/JevPlayground)](https://github.com/lucaslenglet/JevPlayground/blob/main/LICENSE)
+
 A local playground for a **Jev** model (a "System One" model: it does not
 generate prose, it returns a typed decision with its probabilities).
 
@@ -15,8 +20,11 @@ dotnet tool install -g lucaslgt.JevPlay
 Then:
 
 ```bash
-jevplay serve --key YOUR_KEY
+export JEV_API_KEY=YOUR_KEY
+jevplay serve
 ```
+
+Or, with no key and no network: `jevplay serve --provider mock`.
 
 ## Usage
 
@@ -50,6 +58,9 @@ In order of priority:
 
 1. `--key YOUR_KEY`
 2. the `JEV_API_KEY` environment variable
+
+Prefer the environment variable: a key passed with `--key` stays in your shell
+history and is visible to anyone listing the processes on the machine.
 
 If the provider needs one and neither is supplied, the tool refuses to start
 and repeats those two ways of supplying it. `simple-jev` and `mock` do not
@@ -89,7 +100,7 @@ model `jev-latest`.
 > read, treat the `typesafe` provider as untested.
 >
 > If the real API differs, everything to fix lives in
-> [`src/JevPlay/Providers/TypeSafeProvider.cs`](src/JevPlay/Providers/TypeSafeProvider.cs):
+> [`src/JevPlay/Providers/TypeSafeProvider.cs`](https://github.com/lucaslenglet/JevPlayground/blob/main/src/JevPlay/Providers/TypeSafeProvider.cs):
 > the DTOs at the bottom of the file, and the `BuildBody` and `ReadReply`
 > methods. No other file in the project knows the HTTP body shape.
 
@@ -231,5 +242,12 @@ dotnet run --project src/JevPlay -- serve --provider mock
 safety net, and it runs against the packed tool rather than build output, so it also covers the
 embedded assets and the tool manifest.
 
-To release, push a `v*` tag. The tag is the only source of the published version, so nothing in
-the repository needs bumping.
+To release, rename `## [Unreleased]` in `CHANGELOG.md` to the new version, commit, then push a
+`v*` tag. The tag is the only source of the published version, so nothing else needs bumping.
+
+## License
+
+[MIT-0](https://github.com/lucaslenglet/JevPlayground/blob/main/LICENSE): use it however you like, no attribution required.
+
+This project does not accept contributions; see [CONTRIBUTING.md](https://github.com/lucaslenglet/JevPlayground/blob/main/CONTRIBUTING.md).
+Changes are listed in [CHANGELOG.md](https://github.com/lucaslenglet/JevPlayground/blob/main/CHANGELOG.md).
